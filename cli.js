@@ -23,7 +23,21 @@ lg.stdout.on("data", data => {
     return;
   }
 
-  const all = m.map(str => JSON.parse(str));
+  function jsonString(str) {
+    try {
+      JSON.parse(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  const all = m.map(str => {
+    if (jsonString(str)) {
+      return JSON.parse(str);
+    }
+    return str;
+  });
 
   all.forEach(data => {
     const { timestamp, eventMessage } = data;
